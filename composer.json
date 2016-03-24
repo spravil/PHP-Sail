@@ -1,18 +1,29 @@
 {
-    "name": "funnyitselmo/sail",
-    "type": "library",
-    "description": "Sail is a lightweight micro-framework to create quick and simple yet powerful APIs.",
-    "keywords": ["framework","lightweight","restful","micro","api","router"],
-    "license": "BSD",
-    "repositories" : [
-    {
-        "type": "vcs",
-        "url": "https://github.com/FunnyItsElmo/Sail.git"
-    }
-    ],
-    "autoload": {
-        "psr-4" : {
-            "Sail\\" : "sail/"
-        }
-    }
+	"name" : "funnyitselmo/sail",
+	"type" : "library",
+	"description" : "Sail is a lightweight micro-framework to create quick and simple yet powerful APIs.",
+	"keywords" : [
+		"framework",
+		"lightweight",
+		"restful",
+		"micro",
+		"api",
+		"router"
+	],
+	"license" : "BSD",
+	"repositories" : [{
+			"type" : "vcs",
+			"url" : "https://github.com/FunnyItsElmo/Sail.git"
+		}
+	],
+	"autoload" : {
+		"psr-4" : {
+			"Sail\\" : "src/"
+		}
+	},
+	"authors" : [{
+			"name" : "Julian Spravil",
+			"email" : "julian.spr@t-online.de"
+		}
+	]
 }
