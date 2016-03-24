@@ -27,7 +27,7 @@ class Node
 
     /**
      * Gets the next Node
-     * 
+     *
      * @param node $key            
      * @return Node
      */
@@ -37,9 +37,9 @@ class Node
     }
 
     /**
-     * Adds a Node to the next array with 
+     * Adds a Node to the next array with
      * the specified key as index
-     * 
+     *
      * @param string $key            
      * @param Node $node            
      */
@@ -50,7 +50,7 @@ class Node
 
     /**
      * Gets the callable for the specified key
-     * 
+     *
      * @param string $key            
      */
     public function getCallable ($key)
@@ -59,9 +59,9 @@ class Node
     }
 
     /**
-     * Adds a callable to the callable array 
+     * Adds a callable to the callable array
      * with the specified key as index
-     * 
+     *
      * @param string $key            
      * @param closure $value            
      */
@@ -71,9 +71,9 @@ class Node
     }
 
     /**
-     * Replace the middleware of this and 
+     * Replace the middleware of this and
      * child nodes
-     * 
+     *
      * @param array $middleware            
      */
     public function setMiddleware ($middleware)
@@ -87,7 +87,7 @@ class Node
 
     /**
      * Gets the middleware array
-     * 
+     *
      * @return array
      */
     public function getMiddleware ()
@@ -97,7 +97,7 @@ class Node
 
     /**
      * Merges this and another node
-     * 
+     *
      * @param Node $node            
      */
     public function merge ($node)

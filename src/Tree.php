@@ -38,6 +38,7 @@ abstract class Tree
     {
         $args = func_get_args();
         $pattern = array_shift($args);
+        $pattern = trim($pattern, '/');
         $tree = array_pop($args);
         
         if (! $tree instanceof self) {
@@ -48,7 +49,7 @@ abstract class Tree
             $tree->root->setMiddleware($args);
         }
         
-        $node = $this->defineRoute($pattern);
+        $node = $pattern != '' ? $this->defineRoute($pattern) : $this->root;
         $node->merge($tree->root);
         
         return $node;
@@ -126,9 +127,14 @@ abstract class Tree
         
         $callable = $node->getCallable($request->getRequestMethod());
         
-        if ($callable == null || ! is_callable($callable)) {
-            throw new \Exception('Callable expected got ' . gettype($callable));
-        }
+        if ($callable == null) {
+            throw new NoSuchRouteException(
+                    'The route ' . $request->getPattern() . ' does not exist');
+        } else 
+            if (! is_callable($callable)) {
+                throw new \Exception(
+                        'Callable expected got ' . gettype($callable));
+            }
         
         array_unshift($parameters, $response);
         array_unshift($parameters, $request);
@@ -140,10 +146,11 @@ abstract class Tree
                         'Object is not instance of class Middleware!');
             }
             
-            if (! call_user_func_array(array(
-                    $middleware,
-                    'call'
-            ), $parameters)) {
+            if (! call_user_func_array(
+                    array(
+                            $middleware,
+                            'call'
+                    ), $parameters)) {
                 $success = false;
             }
         }
@@ -162,9 +169,10 @@ abstract class Tree
         $args = func_get_args();
         $funcArgs = array_shift($args);
         $pattern = array_shift($funcArgs);
+        $pattern = trim($pattern, '/');
         $callable = array_pop($funcArgs);
         
-        $node = $this->defineRoute($pattern);
+        $node = $pattern != '' ? $this->defineRoute($pattern) : $this->root;
         
         if (! empty($funcArgs)) {
             $node->setMiddleware($args);
@@ -218,6 +226,7 @@ abstract class Tree
                 function  ($waypoint, $temp) use ( &$parameters)
                 {
                     $next = $temp->getNext($waypoint);
+                    
                     if ($next == null) {
                         $next = $temp->getNext('{}');
                         if ($next == null) {
