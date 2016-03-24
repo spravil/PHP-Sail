@@ -8,10 +8,6 @@
  * @license     https://github.com/FunnyItsElmo/Sail/blob/master/LICENSE
  */
 namespace Sail;
-require 'Node.php';
-require 'Request.php';
-require 'Response.php';
-require 'Middleware.php';
 
 class NoSuchRouteException extends \Exception
 {
