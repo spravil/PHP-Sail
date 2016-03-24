@@ -4,6 +4,7 @@
     "description": "Sail is a lightweight micro-framework to create quick and simple yet powerful APIs.",
     "keywords": ["framework","lightweight","restful","micro","api","router"],
     "license": "BSD",
+    "version": "0.1.0-dev",.
     "minimum-stability": "dev",
     "repositories" : [
     {
