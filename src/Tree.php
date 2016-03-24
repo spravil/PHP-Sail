@@ -34,7 +34,6 @@ abstract class Tree
     {
         $args = func_get_args();
         $pattern = array_shift($args);
-        $pattern = trim($pattern, '/');
         $tree = array_pop($args);
         
         if (! $tree instanceof self) {
@@ -45,7 +44,7 @@ abstract class Tree
             $tree->root->setMiddleware($args);
         }
         
-        $node = $pattern != '' ? $this->defineRoute($pattern) : $this->root;
+        $node = $this->defineRoute($pattern);
         $node->merge($tree->root);
         
         return $node;
@@ -106,54 +105,59 @@ abstract class Tree
     }
 
     /**
-     * Runs the application and handles
-     * the request
+     * Searches the node which matchs the
+     * specified pattern
+     *
+     * @param unknown $pattern            
      */
-    public function run ()
+    protected function getNode ($pattern)
     {
-        $request = new Request();
-        $response = new Response();
+        $parameters = array();
+        $node = $this->retrieveRoute($pattern, 
+                function  ($waypoint, $temp) use ( &$parameters)
+                {
+                    $next = $temp->getNext($waypoint);
+                    
+                    if ($next == null) {
+                        $next = $temp->getNext('{}');
+                        if ($next == null) {
+                            return null;
+                        } else {
+                            $parameters[] = $waypoint;
+                        }
+                    }
+                    
+                    return $next;
+                });
         
-        list ($node, $parameters) = $this->getNode($request->getPattern());
+        return array(
+                $node,
+                $parameters
+        );
+    }
+
+    /**
+     * Retrieves the route for the specified pattern
+     *
+     * @param unknown $pattern            
+     * @param unknown $callable            
+     */
+    protected function retrieveRoute ($pattern, $callable)
+    {
+        $pattern = trim($pattern, '/');
         
-        if ($node == null) {
-            throw new NoSuchRouteException(
-                    'The route ' . $request->getPattern() . ' does not exist');
+        if ($pattern == '') {
+            return $this->root;
         }
         
-        $callable = $node->getCallable($request->getRequestMethod());
+        $route = explode('/', $pattern);
         
-        if ($callable == null) {
-            throw new NoSuchRouteException(
-                    'The route ' . $request->getPattern() . ' does not exist');
-        } else 
-            if (! is_callable($callable)) {
-                throw new \Exception(
-                        'Callable expected got ' . gettype($callable));
-            }
-        
-        array_unshift($parameters, $response);
-        array_unshift($parameters, $request);
-        
-        $success = true;
-        foreach ($node->middleware as $middleware) {
-            if (! $middleware instanceof Middleware) {
-                throw new \Exception(
-                        'Object is not instance of class Middleware!');
-            }
-            
-            if (! call_user_func_array(
-                    array(
-                            $middleware,
-                            'call'
-                    ), $parameters)) {
-                $success = false;
-            }
+        $temp = $this->root;
+        foreach ($route as $waypoint) {
+            $temp = $callable($waypoint, $temp);
         }
         
-        if ($success) {
-            call_user_func_array($callable, $parameters);
-        }
+        return $temp;
     }
 
     /**
@@ -165,10 +169,9 @@ abstract class Tree
         $args = func_get_args();
         $funcArgs = array_shift($args);
         $pattern = array_shift($funcArgs);
-        $pattern = trim($pattern, '/');
         $callable = array_pop($funcArgs);
         
-        $node = $pattern != '' ? $this->defineRoute($pattern) : $this->root;
+        $node = $this->defineRoute($pattern);
         
         if (! empty($funcArgs)) {
             $node->setMiddleware($args);
@@ -207,56 +210,5 @@ abstract class Tree
                     
                     return $next;
                 });
-    }
-
-    /**
-     * Searches the node which matchs the
-     * specified pattern
-     *
-     * @param unknown $pattern            
-     */
-    private function getNode ($pattern)
-    {
-        $parameters = array();
-        $node = $this->retrieveRoute($pattern, 
-                function  ($waypoint, $temp) use ( &$parameters)
-                {
-                    $next = $temp->getNext($waypoint);
-                    
-                    if ($next == null) {
-                        $next = $temp->getNext('{}');
-                        if ($next == null) {
-                            return null;
-                        } else {
-                            $parameters[] = $waypoint;
-                        }
-                    }
-                    
-                    return $next;
-                });
-        
-        return array(
-                $node,
-                $parameters
-        );
-    }
-
-    /**
-     * Retrieves the route for the specified pattern
-     *
-     * @param unknown $pattern            
-     * @param unknown $callable            
-     */
-    private function retrieveRoute ($pattern, $callable)
-    {
-        $pattern = trim($pattern, '/');
-        $route = explode('/', $pattern);
-        
-        $temp = $this->root;
-        foreach ($route as $waypoint) {
-            $temp = $callable($waypoint, $temp);
-        }
-        
-        return $temp;
     }
 }

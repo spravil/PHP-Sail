@@ -1,6 +1,7 @@
 <?php
 use Sail\Tree;
 use Sail\NoSuchRouteException;
+use Sail\Sail;
 
 require '../vendor/autoload.php';
 
@@ -23,25 +24,19 @@ class TestTree extends Tree
     }
 }
 
-class MainTree extends Tree
-{
+$sail = new Sail();
 
-    public function build ()
-    {
-        $this->get('/', 
-                function  ($request, $response)
-                {
-                    echo 'Welcome to Sail!';
-                });
-        
-        $this->tree('/test', new TestTree());
-    }
-}
+$sail->get('/',
+        function  ($request, $response)
+        {
+            echo 'Welcome to Sail!';
+});
 
-$mainTree = new MainTree();
+
+$sail->tree('/test', new TestTree());
 
 try {
-    $mainTree->run();
+    $sail->run();
 } catch (NoSuchRouteException $e) {
     echo $e->getMessage();
 }
