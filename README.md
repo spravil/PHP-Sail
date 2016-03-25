@@ -12,7 +12,9 @@ composer require funnyitselmo/sail
 use Sail\Sail;
 use Sail\Tree;
 use Sail\Middleware;
-use Sail\NoSuchRouteException;
+use Sail\Exceptions\NoSuchRouteException;
+use Sail\Exceptions\NoMiddlewareException;
+use Sail\Exceptions\NoCallableException;
 
 require '../vendor/autoload.php';
 
@@ -30,11 +32,12 @@ $sail = new Sail();
  * DELETE $sail->delete()
  * OPTIONS $sail->options()
  */
-$sail->get('/', 
+$sail->get('/',
         function  ($request, $response)
         {
-            echo 'Hello World!';
-        });
+    
+            $response->setData('Hello World!');
+});
 
 /**
  * Lets create a new sub tree which will handle all request that start
@@ -46,33 +49,40 @@ class TestTree extends Tree
 
     public function build ()
     {
-        $this->get('/', 
+        $this->get('/',
                 function  ($request, $response)
                 {
-                    echo 'You can see me if you request /test';
-                });
-        
-        // everything that is in curly braces is a variable
-        $this->get('/{id}', 
+                    $response->setData('You can see me if you request /test');
+        });
+
+        //everything that is in curly braces is a variable
+        $this->get('/{id}',
                 function  ($request, $response, $id)
                 {
-                    echo 'I can also handle variables! request /test/42 <br>';
-                    echo '{id} is ' . $id;
-                });
+                    $data = array('I can also handle variables! request /test/42',
+                           '{id} is ' . $id
+                    );
+                    
+                    $response->setHeaders(array(
+                            'Content-Type' => 'application/json'
+                    ));
+                    
+                    $response->setData(json_encode($data));
+                    
+        });
     }
 }
 
 /**
  * It is time to create our first middleare.
  */
-class AuthMiddleware implements Middleware
-{
+class AuthMiddleware implements Middleware {
 
-    public function call ()
-    {
-        // check if the user is allowed to view the route
+    public function call() {
+        //check if the user is allowed to view the route
         return true;
     }
+
 }
 
 /**
@@ -83,12 +93,16 @@ class AuthMiddleware implements Middleware
 $sail->tree('/test', new AuthMiddleware(), new TestTree());
 
 /**
- * Now we just need to run the code and catch the
+ * Now we just need to run the code and catch the 
  * perhaps occurring exceptions
  */
 try {
     $sail->run();
 } catch (NoSuchRouteException $e) {
+    echo $e->getMessage();
+} catch (NoMiddlewareException $e) {
+    echo $e->getMessage();
+} catch (NoCallableException $e) {
     echo $e->getMessage();
 }
 ```
