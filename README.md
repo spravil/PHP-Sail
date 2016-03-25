@@ -32,11 +32,8 @@ $sail = new Sail();
  * DELETE $sail->delete()
  * OPTIONS $sail->options()
  */
-$sail->get('/',
-        function  ($request, $response)
-        {
-    
-            $response->setData('Hello World!');
+$sail->get('/', function  ($request, $response) {
+        $response->setData('Hello World!');
 });
 
 /**
@@ -44,33 +41,27 @@ $sail->get('/',
  * with test or any other route we will specifiy later
  * NOTE: Sail also extends Tree
  */
-class TestTree extends Tree
-{
+class TestTree extends Tree {
 
-    public function build ()
-    {
-        $this->get('/',
-                function  ($request, $response)
-                {
-                    $response->setData('You can see me if you request /test');
-        });
-
-        //everything that is in curly braces is a variable
-        $this->get('/{id}',
-                function  ($request, $response, $id)
-                {
-                    $data = array('I can also handle variables! request /test/42',
-                           '{id} is ' . $id
-                    );
+        public function build () {
+        
+                $this->get('/', function  ($request, $response) {
+                        $response->setData('You can see me if you request /test');
+                });
+                
+                //everything that is in curly braces is a variable
+                $this->get('/{id}', function  ($request, $response, $id) {
+                        $data = array('I can also handle variables! request /test/42', '{id} is ' . $id);
                     
-                    $response->setHeaders(array(
-                            'Content-Type' => 'application/json'
-                    ));
+                        $response->setHeaders(array(
+                                'Content-Type' => 'application/json'
+                         ));
                     
-                    $response->setData(json_encode($data));
-                    
-        });
-    }
+                        $response->setData(json_encode($data));
+                });
+                
+        }
+        
 }
 
 /**
@@ -78,10 +69,10 @@ class TestTree extends Tree
  */
 class AuthMiddleware implements Middleware {
 
-    public function call() {
-        //check if the user is allowed to view the route
-        return true;
-    }
+        public function call() {
+                //check if the user is allowed to view the route
+                return true;
+        }
 
 }
 
@@ -97,12 +88,12 @@ $sail->tree('/test', new AuthMiddleware(), new TestTree());
  * perhaps occurring exceptions
  */
 try {
-    $sail->run();
+        $sail->run();
 } catch (NoSuchRouteException $e) {
-    echo $e->getMessage();
+        echo $e->getMessage();
 } catch (NoMiddlewareException $e) {
-    echo $e->getMessage();
+        echo $e->getMessage();
 } catch (NoCallableException $e) {
-    echo $e->getMessage();
+        echo $e->getMessage();
 }
 ```
