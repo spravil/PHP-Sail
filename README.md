@@ -1,4 +1,9 @@
 # Sail
+
+[![Latest Stable Version](https://poser.pugx.org/funnyitselmo/sail/v/stable)](https://packagist.org/packages/funnyitselmo/sail)
+[![Total Downloads](https://poser.pugx.org/funnyitselmo/sail/downloads)](https://packagist.org/packages/funnyitselmo/sail)
+[![License](https://poser.pugx.org/funnyitselmo/sail/license)](https://packagist.org/packages/funnyitselmo/sail)
+
 Sail is a lightweight object-oriented micro-framework written in PHP to create quick and simple yet powerful APIs.
 ### Installation
 ```
