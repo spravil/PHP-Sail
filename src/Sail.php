@@ -1,11 +1,18 @@
 <?php
+/**
+ * Sail Micro-Framework
+ *
+ * @link        https://github.com/FunnyItsElmo/PHP-Sail.git
+ * @author      Julian Spravil <julian.spr@t-online.de>
+ * @copyright   Copyright (c) 2016 Julian Spravil
+ * @license     https://github.com/FunnyItsElmo/Sail/blob/master/LICENSE
+ */
 namespace Sail;
 use Sail\Exceptions\NoSuchRouteException;
 use Sail\Exceptions\NoCallableException;
 use Sail\Exceptions\NoMiddlewareException;
 
-class Sail extends Tree
-{
+class Sail extends Tree {
 
     /**
      *
@@ -13,15 +20,13 @@ class Sail extends Tree
      *
      * @see \Sail\Tree::build()
      */
-    public function build ()
-    {}
+    public function build () {}
 
     /**
      * Runs the application and handles
      * the request
      */
-    public function run ()
-    {
+    public function run () {
         $request = new Request();
         $response = new Response();
         
@@ -50,11 +55,10 @@ class Sail extends Tree
                 throw new NoMiddlewareException();
             }
             
-            if (! call_user_func_array(
-                    array(
-                            $middleware,
-                            'call'
-                    ), $parameters)) {
+            if (! call_user_func_array(array(
+                    $middleware,
+                    'call'
+            ), $parameters)) {
                 $success = false;
             }
         }

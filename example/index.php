@@ -22,11 +22,9 @@ $sail = new Sail();
  * DELETE $sail->delete()
  * OPTIONS $sail->options()
  */
-$sail->get('/',
-        function  ($request, $response)
-        {
+$sail->get('/', function  ($request, $response) {
     
-            $response->setData('Hello World!');
+    $response->setData('Hello World!');
 });
 
 /**
@@ -34,23 +32,19 @@ $sail->get('/',
  * with test or any other route we will specifiy later
  * NOTE: Sail also extends Tree
  */
-class TestTree extends Tree
-{
+class TestTree extends Tree {
 
-    public function build ()
-    {
-        $this->get('/',
-                function  ($request, $response)
-                {
-                    $response->setData('You can see me if you request /test');
+    public function build () {
+        $this->get('/', function  ($request, $response) {
+            $response->setData('You can see me if you request /test');
         });
-
-        //everything that is in curly braces is a variable
-        $this->get('/{id}',
-                function  ($request, $response, $id)
-                {
-                    $data = array('I can also handle variables! request /test/42',
-                           '{id} is ' . $id
+        
+        // everything that is in curly braces is a variable
+        $this->get('/{id}', 
+                function  ($request, $response, $id) {
+                    $data = array(
+                            'I can also handle variables! request /test/42',
+                            '{id} is ' . $id
                     );
                     
                     $response->setHeaders(array(
@@ -58,8 +52,7 @@ class TestTree extends Tree
                     ));
                     
                     $response->setData(json_encode($data));
-                    
-        });
+                });
     }
 }
 
@@ -68,11 +61,10 @@ class TestTree extends Tree
  */
 class AuthMiddleware implements Middleware {
 
-    public function call() {
-        //check if the user is allowed to view the route
+    public function call () {
+        // check if the user is allowed to view the route
         return true;
     }
-
 }
 
 /**
@@ -83,7 +75,7 @@ class AuthMiddleware implements Middleware {
 $sail->tree('/test', new AuthMiddleware(), new TestTree());
 
 /**
- * Now we just need to run the code and catch the 
+ * Now we just need to run the code and catch the
  * perhaps occurring exceptions
  */
 try {

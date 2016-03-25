@@ -2,20 +2,18 @@
 /**
  * Sail Micro-Framework
  *
- * @link        https://github.com/FunnyItsElmo/Sail
- * @author      Julian Spravil <julian.spr@t-online.de> https://github.com/FunnyItsElmo
+ * @link        https://github.com/FunnyItsElmo/PHP-Sail.git
+ * @author      Julian Spravil <julian.spr@t-online.de>
  * @copyright   Copyright (c) 2016 Julian Spravil
  * @license     https://github.com/FunnyItsElmo/Sail/blob/master/LICENSE
  */
 namespace Sail;
 
-abstract class Tree
-{
+abstract class Tree {
 
     public $root;
 
-    public function __construct ()
-    {
+    public function __construct () {
         $this->root = new Node('');
         $this->build();
     }
@@ -26,8 +24,7 @@ abstract class Tree
      * Merges the node for the specified pattern
      * with the root node of the specified tree
      */
-    public function tree ()
-    {
+    public function tree () {
         $args = func_get_args();
         $pattern = array_shift($args);
         $tree = array_pop($args);
@@ -49,8 +46,7 @@ abstract class Tree
     /**
      * Adds GET route
      */
-    public function get ()
-    {
+    public function get () {
         $args = func_get_args();
         $this->map($args, Request::METHOD_GET, Request::METHOD_HEAD);
     }
@@ -58,8 +54,7 @@ abstract class Tree
     /**
      * Adds PUT route
      */
-    public function put ()
-    {
+    public function put () {
         $args = func_get_args();
         $this->map($args, Request::METHOD_PUT);
     }
@@ -67,8 +62,7 @@ abstract class Tree
     /**
      * Adds POST route
      */
-    public function post ()
-    {
+    public function post () {
         $args = func_get_args();
         $this->map($args, Request::METHOD_POST);
     }
@@ -76,8 +70,7 @@ abstract class Tree
     /**
      * Adds PATCH route
      */
-    public function patch ()
-    {
+    public function patch () {
         $args = func_get_args();
         $this->map($args, Request::METHOD_PATCH);
     }
@@ -85,8 +78,7 @@ abstract class Tree
     /**
      * Adds DELETE route
      */
-    public function delete ()
-    {
+    public function delete () {
         $args = func_get_args();
         $this->map($args, Request::METHOD_DELETE);
     }
@@ -94,8 +86,7 @@ abstract class Tree
     /**
      * Adds OPTIONS route
      */
-    public function options ()
-    {
+    public function options () {
         $args = func_get_args();
         $this->map($args, Request::METHOD_OPTIONS);
     }
@@ -106,12 +97,10 @@ abstract class Tree
      *
      * @param unknown $pattern            
      */
-    protected function getNode ($pattern)
-    {
+    protected function getNode ($pattern) {
         $parameters = array();
         $node = $this->retrieveRoute($pattern, 
-                function  ($waypoint, $temp) use ( &$parameters)
-                {
+                function  ($waypoint, $temp) use ( &$parameters) {
                     $next = $temp->getNext($waypoint);
                     
                     if ($next == null) {
@@ -138,8 +127,7 @@ abstract class Tree
      * @param unknown $pattern            
      * @param unknown $callable            
      */
-    protected function retrieveRoute ($pattern, $callable)
-    {
+    protected function retrieveRoute ($pattern, $callable) {
         $pattern = trim($pattern, '/');
         
         if ($pattern == '') {
@@ -160,8 +148,7 @@ abstract class Tree
      * Defines the node and adds
      * the callable
      */
-    private function map ()
-    {
+    private function map () {
         $args = func_get_args();
         $funcArgs = array_shift($args);
         $pattern = array_shift($funcArgs);
@@ -188,11 +175,9 @@ abstract class Tree
      *
      * @param unknown $pattern            
      */
-    private function defineRoute ($pattern)
-    {
+    private function defineRoute ($pattern) {
         return $this->retrieveRoute($pattern, 
-                function  ($waypoint, $temp)
-                {
+                function  ($waypoint, $temp) {
                     $key = $waypoint;
                     if (preg_match('/{[a-zA-Z0-9]*}/', $waypoint)) {
                         $key = '{}';

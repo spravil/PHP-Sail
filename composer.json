@@ -1,5 +1,5 @@
 {
-	"name" : "funnyitselmo/sail",
+	"name" : "FunnyItsElmo/Sail",
 	"type" : "library",
 	"description" : "Sail is a lightweight object-oriented micro-framework written in PHP to create quick and simple yet powerful APIs.",
 	"keywords" : [
@@ -13,7 +13,7 @@
 	"license" : "BSD",
 	"repositories" : [{
 			"type" : "vcs",
-			"url" : "https://github.com/FunnyItsElmo/Sail.git"
+			"url" : "https://github.com/FunnyItsElmo/PHP-Sail.git"
 		}
 	],
 	"autoload" : {
@@ -22,9 +22,6 @@
 			"Sail\\Exceptions\\" : "src/Exceptions/"
 		}
 	},
-	"archive": {
-        "exclude": ["example", "LICENSE", "README.md"]
-    },
 	"authors" : [{
 			"name" : "Julian Spravil",
 			"email" : "julian.spr@t-online.de"

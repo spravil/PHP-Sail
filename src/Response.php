@@ -2,15 +2,14 @@
 /**
  * Sail Micro-Framework
  *
- * @link        https://github.com/FunnyItsElmo/Sail
- * @author      Julian Spravil <julian.spr@t-online.de> https://github.com/FunnyItsElmo
+ * @link        https://github.com/FunnyItsElmo/PHP-Sail.git
+ * @author      Julian Spravil <julian.spr@t-online.de>
  * @copyright   Copyright (c) 2016 Julian Spravil
  * @license     https://github.com/FunnyItsElmo/Sail/blob/master/LICENSE
  */
 namespace Sail;
 
-class Response
-{
+class Response {
 
     const SWITCHING_PROTOCOLS = 101;
 
@@ -94,18 +93,15 @@ class Response
 
     public $data = null;
 
-    public function setHeaders ($headers)
-    {
+    public function setHeaders ($headers) {
         $this->headers = $headers;
     }
 
-    public function setData ($data)
-    {
+    public function setData ($data) {
         $this->data = $data;
     }
 
-    public function send ()
-    {
+    public function send () {
         foreach ($this->headers as $key => $value) {
             header($key . ': ' . $value);
         }

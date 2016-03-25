@@ -2,8 +2,8 @@
 /**
  * Sail Micro-Framework
  *
- * @link        https://github.com/FunnyItsElmo/Sail
- * @author      Julian Spravil <julian.spr@t-online.de> https://github.com/FunnyItsElmo
+ * @link        https://github.com/FunnyItsElmo/PHP-Sail.git
+ * @author      Julian Spravil <julian.spr@t-online.de>
  * @copyright   Copyright (c) 2016 Julian Spravil
  * @license     https://github.com/FunnyItsElmo/Sail/blob/master/LICENSE
  */
@@ -24,23 +24,22 @@ class Request {
     const METHOD_DELETE = 'DELETE';
 
     const METHOD_OPTIONS = 'OPTIONS';
-    
+
     public $pattern;
-    
-    public function __construct() {
+
+    public function __construct () {
         $this->pattern = isset($_GET['pattern']) ? $_GET['pattern'] : '/';
     }
-    
-    public function getHeaders() {
+
+    public function getHeaders () {
         return getallheaders();
     }
-    
-    public function getRequestMethod() {
+
+    public function getRequestMethod () {
         return $_SERVER['REQUEST_METHOD'];
     }
-    
-    public function getPattern() {
+
+    public function getPattern () {
         return $this->pattern;
     }
-    
 }
