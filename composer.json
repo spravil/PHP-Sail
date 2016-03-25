@@ -1,5 +1,5 @@
 {
-	"name" : "FunnyItsElmo/Sail",
+	"name" : "funnyitselmo/sail",
 	"type" : "library",
 	"description" : "Sail is a lightweight object-oriented micro-framework written in PHP to create quick and simple yet powerful APIs.",
 	"keywords" : [
