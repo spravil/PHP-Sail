@@ -1,7 +1,7 @@
 {
 	"name" : "funnyitselmo/sail",
 	"type" : "library",
-	"description" : "Sail is a lightweight micro-framework to create quick and simple yet powerful APIs.",
+	"description" : "Sail is a lightweight object-oriented micro-framework written in PHP to create quick and simple yet powerful APIs.",
 	"keywords" : [
 		"framework",
 		"lightweight",
@@ -18,9 +18,13 @@
 	],
 	"autoload" : {
 		"psr-4" : {
-			"Sail\\" : "src/"
+			"Sail\\" : "src/",
+			"Sail\\Exceptions\\" : "src/Exceptions/"
 		}
 	},
+	"archive": {
+        "exclude": ["example", "LICENSE", "README.md"]
+    },
 	"authors" : [{
 			"name" : "Julian Spravil",
 			"email" : "julian.spr@t-online.de"

@@ -1,5 +1,8 @@
 <?php
 namespace Sail;
+use Sail\Exceptions\NoSuchRouteException;
+use Sail\Exceptions\NoCallableException;
+use Sail\Exceptions\NoMiddlewareException;
 
 class Sail extends Tree
 {
@@ -25,20 +28,18 @@ class Sail extends Tree
         list ($node, $parameters) = $this->getNode($request->getPattern());
         
         if ($node == null) {
-            throw new NoSuchRouteException(
-                    'The route ' . $request->getPattern() . ' does not exist');
+            throw new NoSuchRouteException($request->getPattern());
         }
         
         $callable = $node->getCallable($request->getRequestMethod());
         
         if ($callable == null) {
-            throw new NoSuchRouteException(
-                    'The route ' . $request->getPattern() . ' does not exist');
-        } else 
+            throw new NoSuchRouteException($request->getPattern());
+        } else {
             if (! is_callable($callable)) {
-                throw new \Exception(
-                        'Callable expected got ' . gettype($callable));
+                throw new NoCallableException();
             }
+        }
         
         array_unshift($parameters, $response);
         array_unshift($parameters, $request);
@@ -46,8 +47,7 @@ class Sail extends Tree
         $success = true;
         foreach ($node->middleware as $middleware) {
             if (! $middleware instanceof Middleware) {
-                throw new \Exception(
-                        'Object is not instance of class Middleware!');
+                throw new NoMiddlewareException();
             }
             
             if (! call_user_func_array(
@@ -62,5 +62,7 @@ class Sail extends Tree
         if ($success) {
             call_user_func_array($callable, $parameters);
         }
+        
+        $response->send();
     }
 }

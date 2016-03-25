@@ -9,10 +9,6 @@
  */
 namespace Sail;
 
-class NoSuchRouteException extends \Exception
-{
-}
-
 abstract class Tree
 {
 

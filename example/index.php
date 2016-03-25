@@ -2,7 +2,9 @@
 use Sail\Sail;
 use Sail\Tree;
 use Sail\Middleware;
-use Sail\NoSuchRouteException;
+use Sail\Exceptions\NoSuchRouteException;
+use Sail\Exceptions\NoMiddlewareException;
+use Sail\Exceptions\NoCallableException;
 
 require '../vendor/autoload.php';
 
@@ -23,7 +25,8 @@ $sail = new Sail();
 $sail->get('/',
         function  ($request, $response)
         {
-            echo 'Hello World!';
+    
+            $response->setData('Hello World!');
 });
 
 /**
@@ -39,15 +42,23 @@ class TestTree extends Tree
         $this->get('/',
                 function  ($request, $response)
                 {
-                    echo 'You can see me if you request /test';
+                    $response->setData('You can see me if you request /test');
         });
 
         //everything that is in curly braces is a variable
         $this->get('/{id}',
                 function  ($request, $response, $id)
                 {
-                    echo 'I can also handle variables! request /test/42 <br>';
-                    echo '{id} is ' . $id;
+                    $data = array('I can also handle variables! request /test/42',
+                           '{id} is ' . $id
+                    );
+                    
+                    $response->setHeaders(array(
+                            'Content-Type' => 'application/json'
+                    ));
+                    
+                    $response->setData(json_encode($data));
+                    
         });
     }
 }
@@ -78,5 +89,9 @@ $sail->tree('/test', new AuthMiddleware(), new TestTree());
 try {
     $sail->run();
 } catch (NoSuchRouteException $e) {
+    echo $e->getMessage();
+} catch (NoMiddlewareException $e) {
+    echo $e->getMessage();
+} catch (NoCallableException $e) {
     echo $e->getMessage();
 }
