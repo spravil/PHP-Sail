@@ -157,7 +157,7 @@ abstract class Tree {
         $node = $this->defineRoute($pattern);
         
         if (! empty($funcArgs)) {
-            $node->setMiddleware($args);
+            $node->setMiddleware($funcArgs);
         }
         
         if (! empty($args)) {
