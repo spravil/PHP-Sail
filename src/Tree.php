@@ -139,6 +139,10 @@ abstract class Tree {
         $temp = $this->root;
         foreach ($route as $waypoint) {
             $temp = $callable($waypoint, $temp);
+            
+            if($temp == null) {
+                break;
+            }
         }
         
         return $temp;
