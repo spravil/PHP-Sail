@@ -93,8 +93,8 @@ class Node {
      * @param Node $node            
      */
     public function merge ($node) {
-        $this->next = array_merge($this->next, $node->next);
-        $this->callable = array_merge($this->callable, $node->callable);
-        $this->middleware = array_merge($this->middleware, $node->middleware);
+        $this->next = $this->next + $node->next;
+        $this->callable = $this->callable + $node->callable;
+        $this->middleware = $this->middleware + $node->middleware;
     }
 }
