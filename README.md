@@ -1,4 +1,4 @@
-# Sail
+# Sail [Discontinued]
 
 [![Latest Stable Version](https://poser.pugx.org/funnyitselmo/sail/v/stable)](https://packagist.org/packages/funnyitselmo/sail) [![Total Downloads](https://poser.pugx.org/funnyitselmo/sail/downloads)](https://packagist.org/packages/funnyitselmo/sail) [![Latest Unstable Version](https://poser.pugx.org/funnyitselmo/sail/v/unstable)](https://packagist.org/packages/funnyitselmo/sail) [![License](https://poser.pugx.org/funnyitselmo/sail/license)](https://packagist.org/packages/funnyitselmo/sail)
 
